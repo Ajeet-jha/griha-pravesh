@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f3e6c8" />
+    <title>Griha Pravesh · गृह प्रवेश</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Handlee&family=Kalam:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+      :root {
+        --paper: #f3e6c8;
+        --ink: #1f2470;
+        --red: #7a2e1d;
+        --line: rgba(39, 40, 107, 0.13);
+        --card: rgba(255, 250, 232, 0.6);
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        background: #4a3b28;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        margin: 0;
+        background: #4a3b28;
+        display: flex;
+        justify-content: center;
+        color: var(--ink);
+      }
+      #app {
+        width: 100%;
+        max-width: 440px;
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+        background-color: var(--paper);
+        background-image: repeating-linear-gradient(
+          transparent 0 33px,
+          var(--line) 33px 34px
+        );
+        box-shadow: inset 0 0 70px rgba(110, 70, 20, 0.45);
+      }
+      #app::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 34px;
+        width: 2px;
+        background: rgba(170, 40, 40, 0.28);
+      }
+      #landing {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 30px;
+        gap: 16px;
+        animation: fade 0.9s both;
+        position: relative;
+      }
+      #landing .om {
+        font-size: 60px;
+        color: var(--red);
+        animation: float 3s ease-in-out infinite;
+      }
+      #landing h1 {
+        font-family: "Handlee", "Kalam", cursive;
+        font-weight: 400;
+        font-size: 26px;
+        line-height: 1.7;
+        margin: 0;
+      }
+      #landing p {
+        font-family: "Kalam", cursive;
+        font-size: 19px;
+        margin: 0;
+      }
+      .lang {
+        width: 220px;
+        padding: 10px 0;
+        font:
+          700 24px "Kalam",
+          cursive;
+        color: var(--ink);
+        background: var(--card);
+        border: 2px dashed var(--ink);
+        border-radius: 14px 6px 16px 8px;
+        cursor: pointer;
+      }
+      .lang:active {
+        transform: scale(0.95) rotate(-1deg);
+      }
+      #page {
+        display: none;
+        position: relative;
+        padding: 34px 20px 80px 50px;
+      }
+      #page.en {
+        font-family: "Caveat", cursive;
+        font-size: 27px;
+        line-height: 36px;
+      }
+      #page.hi {
+        font-family: "Kalam", cursive;
+        font-size: 19px;
+        line-height: 34px;
+      }
+      .w {
+        display: inline-block;
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+      .w.on {
+        opacity: 1;
+      }
+      h1.t {
+        margin: 0 0 6px;
+        color: var(--red);
+        font-weight: 400;
+        line-height: 1.5;
+      }
+      .en h1.t {
+        font-family: "Handlee", cursive;
+        font-size: 30px;
+      }
+      .hi h1.t {
+        font-family: "Kalam", cursive;
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .big {
+        margin: 4px 0;
+        color: var(--red);
+        font-weight: 700;
+        line-height: 1.8;
+      }
+      .en .big {
+        font-family: "Handlee", cursive;
+        font-size: 24px;
+        font-weight: 400;
+      }
+      .hi .big {
+        font-size: 22px;
+      }
+      p.x {
+        margin: 0;
+      }
+      h2.s {
+        margin: 16px 0 0;
+        color: var(--red);
+        font-weight: 700;
+        line-height: 1.5;
+      }
+      .en h2.s {
+        font-size: 30px;
+      }
+      .hi h2.s {
+        font-size: 22px;
+      }
+      .blk {
+        opacity: 0;
+        transform: translateY(10px) rotate(-0.6deg);
+        transition:
+          opacity 0.6s,
+          transform 0.6s;
+        margin: 12px 0;
+      }
+      .blk.on {
+        opacity: 1;
+        transform: none;
+      }
+      .card {
+        background: var(--card);
+        border: 2px solid var(--ink);
+        border-radius: 12px 5px 14px 6px;
+        padding: 10px 14px;
+        line-height: 1.5;
+      }
+      .card b {
+        display: block;
+        color: var(--red);
+      }
+      .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        color: var(--ink);
+        background: var(--card);
+        border: 2px dashed var(--ink);
+        border-radius: 14px 6px 16px 8px;
+        padding: 9px;
+        font-weight: 700;
+        font-size: 22px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .btn:active {
+        transform: scale(0.97);
+      }
+      .map {
+        border: 3px solid var(--ink);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+        transform: rotate(0.5deg);
+      }
+      .map iframe {
+        display: block;
+        width: 100%;
+        height: 220px;
+        border: 0;
+      }
+      .cd {
+        text-align: center;
+        border: 2px solid var(--red);
+        border-radius: 10px 4px 12px 5px;
+        padding: 10px;
+        background: var(--card);
+      }
+      .cdl {
+        font-size: 20px;
+      }
+      .cdn {
+        font-size: 40px;
+        color: var(--red);
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .en .cdn {
+        font-family: "Handlee", cursive;
+        font-weight: 400;
+      }
+      .cdt {
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .qrw {
+        text-align: center;
+      }
+      .qrb {
+        display: inline-block;
+        background: #fbf3dc;
+        padding: 12px;
+        border: 2px solid var(--ink);
+        border-radius: 10px;
+        transform: rotate(-1deg);
+      }
+      .qrb img,
+      .qrb canvas {
+        display: block;
+      }
+      .nm {
+        margin-top: 8px;
+        color: var(--red);
+        font-weight: 700;
+        font-size: 26px;
+      }
+      .hi .nm {
+        font-size: 22px;
+      }
+      #pen {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 28px;
+        pointer-events: none;
+        z-index: 9;
+        opacity: 0;
+        transition:
+          opacity 0.3s,
+          transform 0.25s linear;
+      }
+      #pen.on {
+        opacity: 1;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+      }
+      @keyframes float {
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="landing">
+        <div class="om">ॐ</div>
+        <h1>Griha Pravesh<br />गृह प्रवेश</h1>
+        <p>Choose your language<br />अपनी भाषा चुनें</p>
+        <button class="lang" data-l="hi">हिन्दी</button>
+        <button class="lang" data-l="en">English</button>
+      </div>
+      <div id="page"></div>
+      <div id="pen">✒️</div>
+    </div>
+    <script>
+      // ---- EDIT THESE ----
+      var EVENT_DATE = "2026-12-14";
+      var MAP_EMBED =
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.902645629668!2d77.46834097527609!3d28.60269727568112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ced0073804a93%3A0x867d229a3633429e!2sgit%20rebase!5e0!3m2!1sen!2sin!4v1792331887169!5m2!1sen!2sin";
+      var MAP_LINK = "https://maps.app.goo.gl/YVJeWhjcf7u8FfSy7";
+      var PHONE = "7903573291";
+
+      var app = document.getElementById("app");
+      var page = document.getElementById("page");
+      var pen = document.getElementById("pen");
+      var ld = document.getElementById("landing");
+
+      function pad(n) {
+        return (n < 10 ? "0" : "") + n;
+      }
+      function dec(s) {
+        try {
+          return decodeURIComponent(s);
+        } catch (e) {
+          return s;
+        }
+      }
+      function clean(v) {
+        v = String(v || "")
+          .replace(/[-_.+]+/g, " ")
+          .replace(/[^\w\s\u0900-\u097F]/g, "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 30);
+        return v
+          .split(" ")
+          .map(function (w) {
+            return w.charAt(0).toUpperCase() + w.slice(1);
+          })
+          .join(" ");
+      }
+      // Name comes from the link: ?priya  ?name=priya  #priya  /priya
+      function getName() {
+        var v = "";
+        try {
+          var sp = new URLSearchParams(location.search);
+          v = sp.get("name") || sp.get("n") || "";
+          if (!v)
+            sp.forEach(function (val, key) {
+              if (!v && val === "") v = key;
+            });
+          if (!v) v = dec(location.hash.slice(1));
+          if (!v) {
+            var seg = location.pathname.split("/").filter(Boolean);
+            if (
+              seg.length === 1 &&
+              seg[0] !== "index.html" &&
+              !/claude/i.test(location.hostname)
+            )
+              v = dec(seg[0]);
+          }
+        } catch (e) {}
+        return clean(v);
+      }
+      var guest = getName();
+      var sleep = function (ms) {
+        return new Promise(function (r) {
+          setTimeout(r, ms);
+        });
+      };
+      var rnd = function (a) {
+        return (Math.random() * 2 - 1) * a;
+      };
+
+      var T = {
+        hi: {
+          title: "गृह प्रवेश",
+          nam: "नमस्ते 🙏",
+          dear: function (n) {
+            return n ? "प्रिय " + n + " जी," : "प्रिय परिवारजन,";
+          },
+          inv: function (d) {
+            return (
+              "हम आपको अपने नवनिर्मित घर पर आमंत्रित करना चाहते हैं, जिसका गृह प्रवेश हम " +
+              d +
+              " को करने जा रहे हैं।"
+            );
+          },
+          cd: "शुभ दिन में बाक़ी",
+          days: "दिन",
+          today: "आज शुभ दिन है 🙏",
+          when: "कार्यक्रम",
+          pooja: "पूजा",
+          poojaV: "पूरे दिन",
+          dinner: "रात्रि भोज",
+          dinnerV: "शाम 6:00 बजे से रात 8:30 बजे तक",
+          where: "स्थान",
+          addr: "नज़दीकी मेट्रो स्टेशन: नोएडा सेक्टर 52\nरोज़ा जलालपुर, नगर भट्टा के पास",
+          cal: "📅 कैलेंडर में जोड़ें",
+          mapb: "📍 गूगल मैप में खोलें",
+          bless:
+            "हम आपको हृदय से आमंत्रित करते हैं। कृपया अपनी उपस्थिति दर्ज करें और हमें आशीर्वाद दें। आपके आशीर्वाद के बिना यह पूरा समारोह अधूरा है।",
+          reg: "अपनी उपस्थिति दर्ज करें",
+          regs: "पहुँचने पर यह QR दिखाएँ",
+          wait: "आपकी प्रतीक्षा में,",
+          fam: "सृष्टि झा एवं पूरा परिवार",
+          call: "📞 फ़ोन करें: +91 ",
+          cname: "गृह प्रवेश पूजा",
+        },
+        en: {
+          title: "Griha Pravesh",
+          nam: "Namaste 🙏",
+          dear: function (n) {
+            return n ? "Dear " + n + " ji," : "Dear family & friends,";
+          },
+          inv: function (d) {
+            return (
+              "I would like to invite you to my newly constructed house, which we are planning to have on " +
+              d +
+              "."
+            );
+          },
+          cd: "Days left for the big day",
+          days: "days",
+          today: "Today is the big day 🙏",
+          when: "When",
+          pooja: "Pooja",
+          poojaV: "All day",
+          dinner: "Dinner",
+          dinnerV: "6:00 PM to 8:30 PM",
+          where: "Where",
+          addr: "Nearest metro: Noida Sector 52\nRoza Jalapur, near Nagar Bhatta",
+          cal: "📅 Add to calendar",
+          mapb: "📍 Open in Google Maps",
+          bless:
+            "We cordially invite you. Please register your presence and bless us. Without your blessings, the whole ceremony is incomplete.",
+          reg: "Register your presence",
+          regs: "Show this QR when you arrive",
+          wait: "Eagerly awaiting,",
+          fam: "Srishti Jha & entire family",
+          call: "📞 Call: +91 ",
+          cname: "Griha Pravesh Pooja",
+        },
+      };
+
+      document.querySelectorAll(".lang").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var l = b.getAttribute("data-l");
+          ld.style.transition = "opacity .5s";
+          ld.style.opacity = "0";
+          setTimeout(function () {
+            ld.style.display = "none";
+            page.style.display = "block";
+            document.documentElement.lang = l;
+            write(l);
+          }, 500);
+        });
+      });
+
+      function follow(el) {
+        var r = el.getBoundingClientRect(),
+          a = app.getBoundingClientRect();
+        pen.style.transform =
+          "translate(" +
+          (r.right - a.left - 4) +
+          "px," +
+          (r.bottom - a.top - 24) +
+          "px)";
+        if (r.bottom > window.innerHeight * 0.7)
+          window.scrollBy({
+            top: r.bottom - window.innerHeight * 0.5,
+            behavior: "smooth",
+          });
+      }
+
+      async function say(tag, cls, text, speed) {
+        var el = document.createElement(tag);
+        el.className = cls;
+        page.appendChild(el);
+        var spans = [];
+        text.split(" ").forEach(function (w, i) {
+          if (i > 0) el.appendChild(document.createTextNode(" "));
+          if (!w) return;
+          var s = document.createElement("span");
+          s.className = "w";
+          s.textContent = w;
+          s.style.transform = "rotate(" + rnd(2) + "deg)";
+          el.appendChild(s);
+          spans.push(s);
+        });
+        for (var i = 0; i < spans.length; i++) {
+          spans[i].classList.add("on");
+          follow(spans[i]);
+          await sleep((speed || 90) + rnd(25));
+        }
+        await sleep(120);
+      }
+
+      async function block(node) {
+        node.classList.add("blk");
+        page.appendChild(node);
+        void node.offsetWidth;
+        node.classList.add("on");
+        follow(node);
+        await sleep(650);
+      }
+
+      async function write(l) {
+        var hi = l === "hi";
+        var loc = hi ? "hi-IN" : "en-IN";
+        var t = T[l];
+        var target = new Date(EVENT_DATE + "T00:00:00");
+        var dateTxt = target.toLocaleDateString(hi ? "hi-IN" : "en-GB", {
+          day: "numeric",
+          month: hi ? "long" : "short",
+          year: "numeric",
+        });
+        var weekday = target.toLocaleDateString(loc, { weekday: "long" });
+        page.className = l;
+        pen.classList.add("on");
+
+        await say("h1", "t", t.title, 140);
+        await say("p", "big", t.nam, 130);
+        await say("p", "big", t.dear(guest), 120);
+        await say("p", "x", t.inv(dateTxt), 70);
+
+        // Countdown
+        var cd = document.createElement("div");
+        cd.className = "cd";
+        cd.innerHTML =
+          '<div class="cdl">' +
+          t.cd +
+          '</div><div class="cdn"></div><div class="cdt"></div>';
+        var nEl = cd.querySelector(".cdn"),
+          tEl = cd.querySelector(".cdt");
+        var tick = function () {
+          var ms = target - new Date();
+          if (ms <= 0) {
+            nEl.textContent = "🪔";
+            tEl.textContent = t.today;
+            return;
+          }
+          var d = Math.floor(ms / 864e5),
+            h = Math.floor((ms % 864e5) / 36e5),
+            m = Math.floor((ms % 36e5) / 6e4),
+            s = Math.floor((ms % 6e4) / 1e3);
+          nEl.textContent = d + " " + t.days;
+          tEl.textContent = pad(h) + "h : " + pad(m) + "m : " + pad(s) + "s";
+        };
+        tick();
+        setInterval(tick, 1000);
+        await block(cd);
+
+        // Programme
+        await say("h2", "s", t.when, 110);
+        var c = document.createElement("div");
+        c.className = "card";
+        c.innerHTML =
+          "<b>" +
+          weekday +
+          ", " +
+          dateTxt +
+          "</b>" +
+          t.pooja +
+          ": " +
+          t.poojaV +
+          "<br>" +
+          t.dinner +
+          ": " +
+          t.dinnerV;
+        await block(c);
+
+        // Add to calendar
+        var nx = new Date(target.getTime() + 864e5);
+        var ymd = EVENT_DATE.replace(/-/g, "");
+        var ymd2 =
+          "" + nx.getFullYear() + pad(nx.getMonth() + 1) + pad(nx.getDate());
+        var a = document.createElement("a");
+        a.className = "btn";
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = t.cal;
+        a.href =
+          "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+          "&text=" +
+          encodeURIComponent(t.cname) +
+          "&dates=" +
+          ymd +
+          "/" +
+          ymd2 +
+          "&details=" +
+          encodeURIComponent(
+            t.pooja + ": " + t.poojaV + "\n" + t.dinner + ": " + t.dinnerV,
+          ) +
+          "&location=" +
+          encodeURIComponent(
+            "Roza Jalapur, near Nagar Bhatta, Noida Sector 52",
+          );
+        await block(a);
+
+        // Location
+        await say("h2", "s", t.where, 110);
+        var ad = document.createElement("div");
+        ad.className = "card";
+        ad.style.whiteSpace = "pre-line";
+        ad.textContent = t.addr;
+        await block(ad);
+        var mp = document.createElement("div");
+        mp.className = "map";
+        mp.innerHTML =
+          '<iframe src="' +
+          MAP_EMBED +
+          '" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Map"></iframe>';
+        await block(mp);
+        var mb = document.createElement("a");
+        mb.className = "btn";
+        mb.target = "_blank";
+        mb.rel = "noopener";
+        mb.href = MAP_LINK;
+        mb.textContent = t.mapb;
+        await block(mb);
+
+        // Blessing + QR
+        await say("p", "x", t.bless, 70);
+        await say("h2", "s", t.reg, 100);
+        await say("p", "x", t.regs, 70);
+        var q = document.createElement("div");
+        q.className = "qrw";
+        var qb = document.createElement("div");
+        qb.className = "qrb";
+        q.appendChild(qb);
+        if (guest) {
+          var nm = document.createElement("div");
+          nm.className = "nm";
+          nm.textContent = guest;
+          q.appendChild(nm);
+        }
+        try {
+          new QRCode(qb, {
+            text: "GRIHAPRAVESH|" + (guest || "guest").toLowerCase(),
+            width: 180,
+            height: 180,
+            colorDark: "#1f2470",
+            colorLight: "#fbf3dc",
+            correctLevel: QRCode.CorrectLevel.M,
+          });
+        } catch (e) {
+          qb.textContent = "QR";
+        }
+        await block(q);
+
+        // Sign-off
+        await say("p", "big", t.wait, 120);
+        await say("p", "big", t.fam, 120);
+        var ph = document.createElement("a");
+        ph.className = "btn";
+        ph.href = "tel:+91" + PHONE;
+        ph.textContent = t.call + PHONE;
+        await block(ph);
+        pen.classList.remove("on");
+      }
+    </script>
+  </body>
+</html>
